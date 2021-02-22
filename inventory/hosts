@@ -1,2 +1,10 @@
-[cm]
-cdp-repo.uksouth.cloudapp.azure.com
+[cdp-repo]
+cdp-repo.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=~/ansible/cdp-prepare/ssh-keys/Azcdpcluster-private.ppk
+
+[cdpcm]
+cdpcm.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=~/ansible/cdp-prepare/ssh-keys/Azcdpcluster-private.ppk private_name=cdpcm.jml.org
+
+[cdpmasters]
+cdpmst1.uksouth.cloudapp.azure.com
+
+[cdpworker]

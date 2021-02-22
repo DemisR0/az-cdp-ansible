@@ -4,12 +4,22 @@
   become: true
 
   tasks:
-  - name: create /etc/hosts with privates addresses
+  - name: copy /etc/hosts with privates addresses to host
     copy:
       src: network/local_hosts
       dest: /etc/hosts
       backup: yes
-  - name: set a pivate network hostname
+  - name: print the private name
+    debug:
+      msg: "{{ hostvars[inventory_hostname].private_name }}"
+  - name: set a pivate network hostname for the host
     hostname:
-      use: redhat
-      name: "{{ private_name }}".jml.org
+      name: "{{ hostvars[inventory_hostname].private_name }}"
+  - name: save host iptable.
+    shell: iptables-save > ~/firewall.rules 
+  - name: stop firewall service
+    service:
+      name: firewalld
+      state: stopped
+      enabled: no
+
