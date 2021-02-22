@@ -1,0 +1,15 @@
+---
+- name: prepare host network configuration
+  hosts: cdpcm
+  become: true
+
+  tasks:
+  - name: create /etc/hosts with privates addresses
+    copy:
+      src: network/local_hosts
+      dest: /etc/hosts
+      backup: yes
+  - name: set a pivate network hostname
+    hostname:
+      use: redhat
+      name: "{{ private_name }}".jml.org
