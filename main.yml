@@ -31,3 +31,4 @@
       state: stopped
       enabled: no
     when: ansible_facts.services["iptables.service"] is defined and ansible_facts.services["iptables.service"].state == 'enabled'
+
