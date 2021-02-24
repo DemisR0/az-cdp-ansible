@@ -1,0 +1,28 @@
+---
+- name: Changer servers soft/hard limits
+  hosts: cdpcm
+  become: true
+
+  tasks:
+  - name: update limits.conf [ reboot is required ]
+    blockinfile:
+      block: |
+        *               soft    nofile          65535
+        *               hard    nofile          1029345
+        *               soft    nproc           unlimited
+        *               hard    nproc           unlimited
+        *               soft    memlock         unlimited
+        *               hard    memlock         unlimited 
+      path: /etc/security/limits.conf
+      insertbefore: # End of file
+      marker_begin: BEGIN CDP IBM
+      marker_end: END CDP IBM
+      backup: yes
+  - name: remove default limits file for redhat
+    file:
+      path: /etc/security/limits.d/20-nproc.conf 
+      state: absent
+  - name: list /etc/security/limits.d if any they can prevent correct usage of CDP
+    find:
+      path: /etc/security/limits.d
+      patterns: "*"
