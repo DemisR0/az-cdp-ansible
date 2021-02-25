@@ -1,10 +1,10 @@
 ---
-- name: prepare host network configuration
+- name: NETWORK - host network configuration
   hosts: cdpcm
   become: true
 
   tasks:
-  - name: get the service facs
+  - name: get the service facts
     service_facts:
   - name: copy /etc/hosts with privates addresses to host
     copy:

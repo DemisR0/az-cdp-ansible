@@ -1,0 +1,28 @@
+---
+- hosts: cdpcm
+  become: true
+  gather_facts: no
+  tasks:
+  - name: KUDU - nscd installation and configuration
+    package:
+      name: nscd
+      state: present
+    tags:
+    - kudu
+    - network
+  
+  - name: configure nscd to avoid conflicts with sssd
+    lineinfile:
+      path: /etc/nscd.conf
+      backup: yes
+      regexp: '{{item.From}}'
+      line: '{{item.To}}'
+    with_items:
+      - { From: 'enable-cache(.*)hosts(.*)no', To: '        enable-cache            hosts           yes' }
+      - { From: 'enable-cache(.*)passwd(.*)yes', To: '        enable-cache            passwd          no' }
+      - { From: 'enable-cache(.*)group(.*)yes', To: '        enable-cache            group           no' }
+      - { From: 'enable-cache(.*)netgroup(.*)yes', To: '        enable-cache            netgroup        no' }
+      - { From: 'enable-cache(.*)services(.*)yes', To: '        enable-cache            services        no' }
+    tags:
+    - kudu
+    - network

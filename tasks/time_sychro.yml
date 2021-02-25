@@ -1,0 +1,30 @@
+---
+- hosts: cdpcm
+  become: true  
+  gather_facts: no
+  
+  tasks:
+  - name: TIME SERVER - chrony allow local network host connection
+    lineinfile:
+      path: /etc/chrony.conf
+      insertafter: '^#allow 192.168.0.0/16'
+      line: allow {{ local_network }}
+      regexp: "^allow {{ local_network }}"
+      state: present
+    tags: chrony
+
+- hosts: cdpcm
+  become: true  
+  gather_facts: no
+
+  tasks:
+  - name: configure other servers to use cm as time reference
+    become: true
+    lineinfile:
+      path: /etc/chrony.conf
+      insertafter: '# These servers were defined in the installation:'
+      line: server {{ ntp_local_server }} iburst prefer
+      regexp: "^server {{ ntp_local_server }} iburst prefer"
+      state: present
+      backup: yes
+    tags: chrony
