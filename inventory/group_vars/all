@@ -7,3 +7,8 @@ local_network: 10.0.0.0/24
 postgres_repository: https://download.postgresql.org/pub/repos/yum/common/redhat/rhel-$releasever-$basearch 
 postgres_common: https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-$releasever-$basearch
 postgres_version: 11 
+postgres_data_dir: /database/pg1/pgdata
+postgres_backup_dir: /database/pg1/backups
+postgres_bin_path: /usr/pgsql-11/bin
+postgres_archiving_folder: /bin/true
+postgres_archive_cmd: /bin/true
