@@ -1,0 +1,16 @@
+---
+- name: REPOSITORIES
+  hosts: cdpcm
+  become: true
+  gather_facts: no
+
+  tasks:
+  - name: add cloudera repository
+    yum_repository:
+      name: cdp7
+      description: cloudera cdp 7 repository
+      file: cloudera-cdp7
+      baseurl: "{{ cloudera_repo_url }}" 
+      repo_gpgcheck: no
+      enabled: yes
+    tags: repository

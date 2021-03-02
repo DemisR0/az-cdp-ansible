@@ -12,3 +12,12 @@ postgres_backup_dir: /database/pg1/backups
 postgres_bin_path: /usr/pgsql-11/bin
 postgres_archiving_folder: /bin/true
 postgres_archive_cmd: /bin/true
+
+# Java
+java_package: java-11-openjdk
+
+# Entropy 
+install_entropy: yes
+
+# repositories
+cloudera_repo_url: http://10.0.0.4/cdp

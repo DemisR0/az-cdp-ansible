@@ -13,6 +13,7 @@
       repo_gpgcheck: no
       gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG
       enabled: yes
+    tags: repository
 
   - name: install postgres common repository
     yum_repository:
@@ -23,6 +24,7 @@
       repo_gpgcheck: no
       gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG
       enabled: yes
+    tags: repository
 
   - name: install postgres sofware
     yum:

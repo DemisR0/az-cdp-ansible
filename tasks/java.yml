@@ -1,0 +1,15 @@
+---
+- name: JAVA install JDK & JRE
+  hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+  - name: java open JDK installation
+    package:
+      name: 
+        - "{{ java_package }}"
+        - "{{ java_package }}-devel"
+      state: present
+    tags: packages
+

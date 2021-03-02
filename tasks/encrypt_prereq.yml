@@ -1,0 +1,29 @@
+---
+- hosts: cdpcm
+  become: true
+  gather_facts: no
+
+  tasks:
+  - name: ENTROPY - check Entropy
+    command: cat /proc/sys/kernel/random/entropy_avail
+    register: entropy_test     
+    tags: packages
+
+  - name: Install rng to increase entropy
+    package:
+      name: rng-tools
+      state: latest
+    when: entropy_test < 500
+    tags: packages
+
+  - name: reload deamon config
+    command: systemctl daemon-reload
+
+  - name: start rng service
+    service:
+      name: rngd
+      state: started
+      enabled: yes
+    when: entropy_test < 500
+    tags: packages
+  

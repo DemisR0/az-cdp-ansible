@@ -1,0 +1,5 @@
+[cloudera-repo]
+name=cloudera-repo
+baseurl=http://10.0.0.4/cdp
+enabled=1
+gpgcheck=0 
