@@ -1,5 +1,5 @@
 ---
-- hosts: cdpcm
+- hosts: cdpkudu
   become: true
   gather_facts: no
   tasks:
@@ -10,6 +10,7 @@
     tags:
     - kudu
     - network
+    - packages
   
   - name: configure nscd to avoid conflicts with sssd
     lineinfile:

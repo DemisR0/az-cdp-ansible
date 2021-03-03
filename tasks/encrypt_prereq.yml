@@ -1,5 +1,5 @@
 ---
-- hosts: cdpcm
+- hosts: cdpcluster
   become: true
   gather_facts: no
 

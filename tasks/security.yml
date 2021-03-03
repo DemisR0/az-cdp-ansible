@@ -1,6 +1,6 @@
 ---
 - name: prepare host security [reboot is required ]
-  hosts: cdpcm
+  hosts: cdpcluster
   become: true
 
   tasks:

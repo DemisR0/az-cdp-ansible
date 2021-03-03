@@ -13,7 +13,7 @@
       state: present
     tags: chrony
 
-- hosts: cdpcm
+- hosts: cdpworker
   become: true  
   gather_facts: no
 

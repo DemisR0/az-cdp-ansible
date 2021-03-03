@@ -1,0 +1,41 @@
+---
+- name: POSTGRES installation and configuration
+  hosts: cdpcm
+  become: true  
+
+  tasks:
+  - name: repo key download
+    get_url:
+      url: "{{ postgres_repo_key_url }}"
+      dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG
+      mode: 755
+  - name: install postgres repository
+    yum_repository: 
+      name: pgdg11
+      description: PostgreSQL 12 for RHEL/CentOS $releasever - $basearch
+      file: pgdg-redhat-all  
+      baseurl: "{{ postgres_repository }}"
+      repo_gpgcheck: no
+      gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG
+      enabled: yes
+    tags: repository
+
+  - name: install postgres common repository
+    yum_repository:
+      name: pgdg-common
+      description: PostgreSQL common RPMs for RHEL/CentOS $releasever - $basearch
+      file: pgdg-redhat-all
+      baseurl: "{{ postgres_common }}"
+      repo_gpgcheck: no
+      gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG
+      enabled: yes
+    tags: repository
+
+  - name: install postgres sofware
+    yum:
+      name: 
+        - postgresql{{ postgres_version }}-server
+        - postgresql{{ postgres_version }}-contrib
+        - repmgr_{{ postgres_version }}
+      state: present
+    tags: package

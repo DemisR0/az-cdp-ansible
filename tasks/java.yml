@@ -1,6 +1,6 @@
 ---
 - name: JAVA install JDK & JRE
-  hosts: all
+  hosts: cdpcluster
   become: true
   gather_facts: no
 

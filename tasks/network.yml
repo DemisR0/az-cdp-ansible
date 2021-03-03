@@ -1,6 +1,6 @@
 ---
 - name: NETWORK - host network configuration
-  hosts: cdpcm
+  hosts: cdpcluster
   become: true
 
   tasks:

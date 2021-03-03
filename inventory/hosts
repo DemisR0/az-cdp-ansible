@@ -3,22 +3,27 @@ ntp_local_server=10.0.0.10
 local_network=10.0.0.0/24
 root_folder=/home/fjean/ansible/cdp-prepare
 
-[cdp-repo]
-cdp-repo.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=~/ansible/cdp-prepare/ssh-keys/Azcdpcluster-private.ppk
-
 [cdpcm]
-cdpcm.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=~/ansible/cdp-prepare/ssh-keys/Azcdpcluster-private.ppk private_name=cdpcm.jml.org
+cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmaster1.jml.org
 
 [cdpmasters]
+cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmaster1.jml.org
 
 [cdpworker]
+cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks1.jml.org
+cdpwks2.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks2.jml.org
+cdpwks3.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks3.jml.org
 
 [cdpkudu]
+cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks1.jml.org
 
 [cdpcluster]
-cdpcm.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=~/ansible/cdp-prepare/ssh-keys/Azcdpcluster-private.ppk private_name=cdpcm.jml.org
+cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmaster1.jml.org
+cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks1.jml.org
+cdpwks2.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks2.jml.org
+cdpwks3.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks3.jml.org
 
 [postgres-primary]
 
 [postgres-replicate]
-
+cdpcm.uksouth.cloudapp.azure.com

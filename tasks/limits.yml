@@ -1,6 +1,6 @@
 ---
 - name: LIMITS - Changer servers soft/hard limits
-  hosts: cdpcm
+  hosts: cdpcluster
   become: true
 
   tasks:

@@ -10,7 +10,8 @@
       name: cdp7
       description: cloudera cdp 7 repository
       file: cloudera-cdp7
-      baseurl: "{{ cloudera_repo_url }}" 
-      repo_gpgcheck: no
+      baseurl: "{{ cloudera-manager }}"
+      gpgkey: "{{ cloudera-manager }}/RPM-GPG-KEY-cloudera"
+      repo_gpgcheck: yes
       enabled: yes
     tags: repository

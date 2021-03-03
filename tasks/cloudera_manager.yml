@@ -1,0 +1,16 @@
+---
+- name: CLOUDERA MANAGER
+  hosts: cdpcm
+  become: true
+
+  tasks:
+  - name:
+    yum:
+      name:
+        - cloudera-manager-daemons
+        - cloudera-manager-agent
+        - cloudera-manager-server
+      state: present
+    tags: 
+      - package
+      - cloudera

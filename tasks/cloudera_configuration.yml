@@ -1,0 +1,18 @@
+---
+- name: CLOUDERA MANAGER POST INSTALLATION 
+  hosts: cdpcm
+  become: true
+  gather_facts: no
+
+  environment:
+    JAVA_HOME: "{{ java_home }}"
+    PATH: "{{ java_home }}/bin:$PATH"
+
+  tasks:
+  - name: configure certificated auto-tls
+    command: /opt/cloudera/cm-agent/bin/certmanager setup --configure-services
+
+  - name: install psycog
+    yum:
+      name: {{ psycopg_package }}
+
