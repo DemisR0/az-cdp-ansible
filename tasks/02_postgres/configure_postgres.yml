@@ -136,14 +136,14 @@
     become_user: postgres
     command: "{{ item }}"
     with_items:
-      - echo "alter user scm with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user rman with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user hue with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user metastore with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user oozie with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user das with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user schemaregistry with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user smm with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user rangeradmin with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user registry with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user streamsmsgmgr with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user scm with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user rman with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user hue with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user metastore with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user oozie with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user das with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user schemaregistry with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user smm with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user rangeradmin with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user registry with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user streamsmsgmgr with password '{{ cdp_users_pass }}';"| psql

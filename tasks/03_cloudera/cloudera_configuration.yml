@@ -9,10 +9,22 @@
     PATH: "{{ java_home }}/bin:$PATH"
 
   tasks:
-  - name: configure certificated auto-tls
+  - name: cm - configure certificated auto-tls
     command: /opt/cloudera/cm-agent/bin/certmanager setup --configure-services
-
-  - name: install psycog
+    ignore_errors: yes
+    
+  - name: cm - install psycog
     yum:
-      name: {{ psycopg_package }}
+      name: "{{ psycopg_package }}"
+    tags: packages
+  
+  - name: cm - configure cloudera manager db
+    become: true
+    become_user: postgres    
+    command: /opt/cloudera/cm/schema/scm_prepare_database.sh {{ cloudera_db_type }} scm scm {{ cdp_users_pass }}
 
+  - name: cm - start cm service
+    service:
+      name: cloudera-scm-server
+      state: started
+      enabled: yes
