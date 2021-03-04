@@ -3,79 +3,124 @@
   hosts: cdpcm
   become: true
 
-- name: create folder for DB if it does not exist
-  file:
-    path: "{{ postgres_backup_dir }}"
-    state: directory
-    owner: postgres
-    group: postgres
-    mode: '0755'
+  tasks:
+  - name: create folder for DB if it does not exist
+    file:
+      path: "{{ postgres_backup_dir }}"
+      state: directory
+      owner: postgres
+      group: postgres
+      mode: '0755'
 
-- name: check that postgres directory is free
-  find:
-    paths: "{{ postgres_data_dir }}"
-  register: filesFound
+  - name: check that postgres directory is free
+    find:
+      paths: "{{ postgres_data_dir }}"
+    register: filesFound
 
-- name: create postgres instance
-  become: yes
-  become_user: postgres
-  shell: "{{ postgres_bin_path }}/initdb -D {{ postgres_data_dir }}"
-  register: hstore_ext_result
-  when: filesFound.matched == 0
+  - name: set collation for postgres
+    lineinfile:
+      path: /etc/locale.conf
+      regexp: '^LC_ALL=.*'
+      line: "LC_ALL=en_US.UTF-8"
 
-- name: update default service file
-  lineinfile:
-    path: /usr/lib/systemd/system/postgresql-{{ postgres_version }}.service
-    backup: yes
-    regexp: '^Environment=PGDATA=.*'
-    line: "Environment=PGDATA={{ postgres_data_dir }}"
+  - name: create postgres instance
+    become: yes
+    become_user: postgres
+    shell: "{{ postgres_bin_path }}/initdb -D {{ postgres_data_dir }}"
+    register: hstore_ext_result
+    when: filesFound.matched == 0
 
-- name:  create folder for configuration backups
-  file: 
-    path: "{{ postgres_data_dir }}/bck_conf_files"
-    state: directory
-    owner: postgres
-    group: postgres
-    mode: '0755'
+  - name: update default service file
+    lineinfile:
+      path: /usr/lib/systemd/system/postgresql-{{ postgres_version }}.service
+      backup: yes
+      regexp: '^Environment=PGDATA=.*'
+      line: "Environment=PGDATA={{ postgres_data_dir }}"
 
-- name: create folder for logs archival
-  file:
-    path: "{{ postgres_archiving_folder }}"
-    state: directory
-    owner: postgres
-    group: postgres
-    mode: '0755'
-  when: postgres_archiving_folder != '/bin/true'
+  - name:  create folder for configuration backups
+    file: 
+      path: "{{ postgres_data_dir }}/bck_conf_files"
+      state: directory
+      owner: postgres
+      group: postgres
+      mode: '0755'
 
-- name: change postgres network configuration
-  lineinfile:
-    path: "{{ postgres_data_dir }}/postgresql.conf"
-    backup: yes
-    regexp: '{{item.From}}'
-    line: '{{item.To}}'
-  with_items:
-    - { From: ".*listen_addresses =.*", To: "listen_addresses = '*'" }
-    - { From: '.*max_connections =.*', To: 'max_connections = 300' }
-    - { From: 'shared_buffers =.*', To: 'shared_buffers = 256MB' }
-    - { From: '.*archive_mode = off', To: 'archive_mode = on' }
-    - { From: '.*wal_buffer = .*', To: 'wal_buffer = 8M' }
-    - { From: '.*checkpoint_segments = .*', To: 'checkpoint_segments = 16' }
-    - { From: ".*archive_command =.*" , To: "archive_command = '{{ postgres_archive_cmd }}'" }
+  - name: create folder for logs archival
+    file:
+      path: "{{ postgres_archiving_folder }}"
+      state: directory
+      owner: postgres
+      group: postgres
+      mode: '0755'
+    when: postgres_archiving_folder != '/bin/true'
 
-- name: change pg_hba configuration
-  lineinfile:
-    path: "{{ postgres_data_dir }}/pg_hba_conf"
-    backup: yes
-    regexp: '^host.*all.*all.*md5.*'
-    line: 'host    all             all             127.0.0.1/32            ident'
+  - name: change postgres network configuration
+    lineinfile:
+      path: "{{ postgres_data_dir }}/postgresql.conf"
+      backup: yes
+      regexp: '{{item.From}}'
+      line: '{{item.To}}'
+    with_items:
+      - { From: ".*listen_addresses =.*", To: "listen_addresses = '*'" }
+      - { From: '.*max_connections =.*', To: 'max_connections = 300' }
+      - { From: 'shared_buffers =.*', To: 'shared_buffers = 256MB' }
+      - { From: '.*archive_mode = off', To: 'archive_mode = on' }
+      - { From: '.*wal_buffers = .*', To: 'wal_buffers = 8MB' }
+      - { From: '.*min_wal_size = .*', To: 'min_wal_size = 16' }
+      - { From: ".*archive_command =.*" , To: "archive_command = '{{ postgres_archive_cmd }}'" }
 
-- name: start postgres service
-  service:
-    name: postgresql-{{ postgres_version }}
-    state: started
-    enabled: yes
+  - name: allow trust of local users pg_hba configuration
+    lineinfile:
+      path: "{{ postgres_data_dir }}/pg_hba.conf"
+      backup: yes
+      regexp: '^host.*all.*all.*md5.*'
+      line: 'host    all             all             127.0.0.1/32            ident'
 
-- name: create users for cdp
-  become: yes
-  become_user: postgres
-  commande: createuser {{ item }} -c
+  - name: add ranger admin access for all hosts in pg_hba.conf
+    lineinfile:
+      path: "{{ postgres_data_dir }}/pg_hba.conf"
+      insertafter: 'host    all             all             127.0.0.1/32            ident'
+      line: 'host    ranger          rangeradmin     0.0.0.0/0               md5'
+      state: present
+
+  - name: start postgres service
+    service:
+      name: postgresql-{{ postgres_version }}
+      state: started
+      enabled: yes
+
+  - name: create users for cdp
+    become: yes
+    become_user: postgres
+    command: createuser {{ item }} 
+    with_items:
+      - scm
+      - rman
+      - hue
+      - metastore
+      - oozie
+      - das
+      - schemaregistry
+      - smm
+
+  - name: create users for cdp
+    become: yes
+    become_user: postgres
+    command: createdb {{ item }} --owner {{ item }}  
+    with_items:
+      - scm
+      - rman
+      - hue
+      - metastore
+      - oozie
+      - das
+      - schemaregistry
+      - smm
+
+  - name: create ranger database
+    become: yes
+    become_user: postgres
+    command: "{{ item }}"
+    with_items:
+      - createuser rangeradmin
+      - createdb ranger --owner rangeradmin
