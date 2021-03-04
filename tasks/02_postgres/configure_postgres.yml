@@ -66,7 +66,8 @@
       - { From: 'shared_buffers =.*', To: 'shared_buffers = 256MB' }
       - { From: '.*archive_mode = off', To: 'archive_mode = on' }
       - { From: '.*wal_buffers = .*', To: 'wal_buffers = 8MB' }
-      - { From: '.*min_wal_size = .*', To: 'min_wal_size = 16' }
+      - { From: '.*min_wal_size = .*', To: 'min_wal_size = 1024MB' }
+      - { From: '.*checkpoint_completion_target = .*', To: 'checkpoint_completion_target = 0.9' }
       - { From: ".*archive_command =.*" , To: "archive_command = '{{ postgres_archive_cmd }}'" }
 
   - name: allow trust of local users pg_hba configuration
@@ -102,6 +103,8 @@
       - das
       - schemaregistry
       - smm
+      - registry
+      - streamsmsgmgr
 
   - name: create users for cdp
     become: yes
@@ -116,6 +119,9 @@
       - das
       - schemaregistry
       - smm
+      - registry
+      - streamsmsgmgr
+
 
   - name: create ranger database
     become: yes
@@ -124,3 +130,20 @@
     with_items:
       - createuser rangeradmin
       - createdb ranger --owner rangeradmin
+
+  - name: set password of users
+    become: yes
+    become_user: postgres
+    command: "{{ item }}"
+    with_items:
+      - echo "alter user scm with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user rman with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user hue with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user metastore with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user oozie with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user das with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user schemaregistry with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user smm with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user rangeradmin with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user registry with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user streamsmsgmgr with password '{{ postgres_cdp_users_pass }}';"| psql

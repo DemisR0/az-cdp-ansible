@@ -1,0 +1,20 @@
+---
+- name: prepare host network configuration
+  hosts: cdpcm
+  become: true
+
+  tasks:
+  - name: set password of users
+    become: yes
+    become_user: postgres
+    command: "{{ item }}"
+    with_items:
+      - echo "alter user scm with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user rman with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user hue with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user metastore with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user oozie with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user das with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user schemaregistry with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user smm with password '{{ postgres_cdp_users_pass }}';"| psql
+      - echo "alter user rangeradmin with password '{{ postgres_cdp_users_pass }}';"| psql

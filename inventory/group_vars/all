@@ -13,9 +13,12 @@ postgres_backup_dir: /database/pg1/backups
 postgres_bin_path: /usr/pgsql-11/bin
 postgres_archiving_folder: /bin/true
 postgres_archive_cmd: /bin/true
+postgres_cdp_users_pass: fTiSX6m8gTwX$vN3%Ntwf6
+psycopg_package: python-psycopg2-2.7.5-1
 
 # Java
 java_package: java-11-openjdk
+java_home: /usr/lib/jvm/java-11-openjdk
 
 # Entropy 
 install_entropy: yes

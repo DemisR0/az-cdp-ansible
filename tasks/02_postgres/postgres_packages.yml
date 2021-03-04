@@ -38,4 +38,19 @@
         - postgresql{{ postgres_version }}-contrib
         - repmgr_{{ postgres_version }}
       state: present
-    tags: package
+    tags: packages
+
+  - name: install postgres jdbc drivers
+    yum:
+      name:
+        - postgresql-jdbc*
+      state: latest
+    tags: packages
+
+  - name: prepare java connector for postgres
+    copy:
+      remote_src: yes 
+      src: /usr/share/java/postgresql-jdbc.jar
+      dest: /usr/share/java/postgresql-connector-java.jar
+      mode: 0644
+
