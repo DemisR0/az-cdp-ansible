@@ -18,13 +18,16 @@
       name: "{{ psycopg_package }}"
     tags: packages
   
-  - name: cm - configure cloudera manager db
-    become: true
-    become_user: postgres    
-    command: /opt/cloudera/cm/schema/scm_prepare_database.sh {{ cloudera_db_type }} scm scm {{ cdp_users_pass }}
-
+  - name: cm - configure cloudera manager db 
+    shell: /opt/cloudera/cm/schema/scm_prepare_database.sh -h localhost -P 5432   {{ cloudera_db_type }} scm scm '{{ cdp_users_pass }}'
+    environment: 
+      PATH: /usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+      SHELL: /bin/bash
+     
   - name: cm - start cm service
     service:
       name: cloudera-scm-server
       state: started
       enabled: yes
+    environment: 
+      PATH: /usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin

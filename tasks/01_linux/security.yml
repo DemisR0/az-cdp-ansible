@@ -1,5 +1,5 @@
 ---
-- name: prepare host security [reboot is required ]
+- name: SELINUX prepare host security [reboot is required ]
   hosts: cdpcluster
   become: true
 

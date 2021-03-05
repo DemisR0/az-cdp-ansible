@@ -9,7 +9,7 @@
   
   - name: copy /etc/hosts with privates addresses to host
     copy:
-      src: ../network/local_hosts
+      src: ../../network/local_hosts
       dest: /etc/hosts
       backup: yes
   

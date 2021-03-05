@@ -147,3 +147,4 @@
       - echo "alter user rangeradmin with password '{{ cdp_users_pass }}';"| psql
       - echo "alter user registry with password '{{ cdp_users_pass }}';"| psql
       - echo "alter user streamsmsgmgr with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user postgres with password '{{ cdp_users_pass }}';"| psql

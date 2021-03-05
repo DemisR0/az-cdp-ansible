@@ -1,0 +1,13 @@
+---
+- name: KERBEROS Installation
+  hosts: cdpcluster
+  become: true
+
+  tasks:
+  - name: install kdc packages
+    package:
+      name:
+        - openldap-clients 
+        - krb5-workstation 
+        - krb5-libs
+    tags: packages
