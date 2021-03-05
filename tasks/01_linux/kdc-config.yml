@@ -1,0 +1,26 @@
+---
+- name: KERBEROS - configuration
+  hosts: cdpcluster
+  become: true
+
+  tasks:
+  - name: copy fresh krb5.conf
+    copy:
+      src: ../../files/krb5_init.conf
+      dest: /etc/krb5.conf
+      backup: yes
+
+  - name: kerberos - clients config
+    lineinfile:
+      path: /etc/krb5.conf
+      regexp: '{{item.From}}'
+      line: '{{item.To}}'
+    with_items:
+      - { From: ".*default_realm =.*", To: "default_realm = {{ kdc_realm }}"}
+      - { From: ".*EXAMPLE.COM = {", To: "{{ kdc_realm }} = {"}
+      - { From: ".*kdc = .*", To: "kdc = {{ kdc_server_fqdn }}" }
+      - { From: ".*admin_server = .*", To: "admin_server =  {{ kdc_admin_fqdn }}" }
+      - { From: ".*}", To: " }" }
+      - { From: "# .example.com = EXAMPLE.COM", To: ".{{ kdc_realm_lo }} =  {{ kdc_realm }}" }
+      - { From: "# example.com = EXAMPLE.COM", To: "{{ kdc_realm_lo }} =  {{ kdc_realm }}" }
+      
