@@ -3,10 +3,19 @@
   hosts: cdpcluster
   become: true
 
-  tasks:
-  - name: install kdc packages
+  tasks: 
+  - name: kerberos - install server packages on kdc
     package:
       name:
+      - krb5-server 
+      - pam_krb5
+      state: present
+      when: ansible_hostname == kdc_server
+    tags: packages
+
+  - name: install kdc packages
+    package:
+      name: kerberos - install client packages
         - openldap-clients 
         - krb5-workstation 
         - krb5-libs
