@@ -1,0 +1,28 @@
+---
+- name:  LINUX
+  hosts: cdpcluster
+  gather_facts: false
+  tasks:
+    - debug:
+        msg: "Linux servers configuration for Redhat servers"
+
+- name: NETWORK configuration
+  import_playbook: ./01_linux/network.yml
+
+- name: LIMITS 
+  import_playbook: ./01_linux/limits.yml
+
+- name: SECURITY
+  import_playbook: ./01_linux/security.yml
+
+- name: JAVA installation
+  import_playbook: ./01_linux/java.yml
+
+- name: TIME synchro
+  import_playbook: ./01_linux/time_synchro.yml
+
+- name: KDC pkg installation
+  import_playbook: ./01_linux/kdc-packages.yml
+
+- name: KDC configuration -> manag
+  import_playbook: ./01_linux/kdc-config.yml
