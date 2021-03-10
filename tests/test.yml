@@ -1,20 +1,16 @@
 ---
 - name: prepare host network configuration
-  hosts: cdpcm
+  hosts: cdpcluster
   become: true
-
+  gather_facts: no
+  
   tasks:
-  - name: set password of users
-    become: yes
-    become_user: postgres
-    command: "{{ item }}"
-    with_items:
-      - echo "alter user scm with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user rman with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user hue with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user metastore with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user oozie with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user das with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user schemaregistry with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user smm with password '{{ postgres_cdp_users_pass }}';"| psql
-      - echo "alter user rangeradmin with password '{{ postgres_cdp_users_pass }}';"| psql
+  - name: get the service facts
+    service_facts:
+  - name: stop firewall service
+    service:
+      name: firewalld
+      state: stopped
+      enabled: no
+    when: ansible_facts.services["firewalld.service"] is defined
+  

@@ -9,9 +9,10 @@
   
   - name: copy /etc/hosts with privates addresses to host
     copy:
-      src: ../../network/local_hosts
+      src: ../../files/local_hosts
       dest: /etc/hosts
       backup: yes
+    tags: hosts
   
   - name: print the private name
     debug:
@@ -29,7 +30,7 @@
       name: firewalld
       state: stopped
       enabled: no
-    when: ansible_facts.services["firewalld.service"] is defined and ansible_facts.services["firewalld.service"].state == 'enabled'
+    when: ansible_facts.services["firewalld.service"] is defined
   
   - name: stop iptables service if exists
     service:
@@ -43,4 +44,4 @@
       path: /etc/sysconfig/network
       backup: yes
       regexp: '^HOSTNAME=.*'
-      line: 'HOSTNAME={{ inventory_hostname }}'
+      line: 'HOSTNAME={{ hostvars[inventory_hostname].private_name }}'

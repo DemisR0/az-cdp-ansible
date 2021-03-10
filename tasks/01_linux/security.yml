@@ -2,6 +2,7 @@
 - name: SELINUX prepare host security [reboot is required ]
   hosts: cdpcluster
   become: true
+  gather_facts: false
 
   tasks:
   - name: Install libselinux as prerequisite for SELinux Ansible module

@@ -23,4 +23,37 @@
       - { From: ".*}", To: " }" }
       - { From: "# .example.com = EXAMPLE.COM", To: ".{{ kdc_realm_lo }} =  {{ kdc_realm }}" }
       - { From: "# example.com = EXAMPLE.COM", To: "{{ kdc_realm_lo }} =  {{ kdc_realm }}" }
-      
+    
+  - name: kerberos - check if kdc default database already exist
+    stat: 
+      path: /var/kerberos/krb5kdc/principal
+    register: kdc_file_name
+    when: ansible_hostname == kdc_server
+
+  - name: kereberos - create KDC database
+    command: kdb5_util create -s -r {{ kdc_realm }} -P {{ kdc_pwd }}
+    when: 
+      - ansible_hostname == kdc_server
+      - kdc_file_name.stat.exists == False
+    ignore_errors: yes
+
+  - name: kerberos - make a backup of kdc db
+    command: kdb5_util dump
+    when: ansible_hostname == kdc_server
+    ignore_errors: yes
+
+  - name: kerberos - create admin principal
+    command: kadmin.local -r {{ kdc_realm }} -q "-pw {{ kdc_pwd }} addprinc root/admin"
+    when: ansible_hostname == kdc_server 
+
+  - name: kerberos - start krb5kdc 
+    service: 
+      name: krb5kdc 
+      state: started
+      enabled: yes
+
+  - name: kerberos - start kadmin
+    service: 
+      name: kadmin
+      state: started
+      enabled: yes

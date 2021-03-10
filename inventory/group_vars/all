@@ -23,7 +23,7 @@ java_home: /usr/lib/jvm/java-11-openjdk
 install_entropy: yes
 
 # repositories
-cloudera_repo_url: http://10.0.0.4/cloudera-repos/cm7/7.2.4/redhat7/yum
+cloudera_repo_url: http://10.0.1.11/cloudera-repos/cm7/7.2.4/redhat7/yum
 
 # cloudera 
 cloudera_db_type: postgresql
@@ -32,6 +32,7 @@ cdp_users_pass: fTiSX6m8gTwX$vN3%Ntwf6
 # Kerberos
 kdc_realm: CDPTEST.COM
 kdc_realm_lo: cdptest.com
+kdc_server: cdpmst01
 kdc_server_fqdn: cdpmst01.jml.org
 kdc_admin_fqdn: cdpmst01.jml.org
-
+kdc_pwd: ^vj03hk;PnTxK?%

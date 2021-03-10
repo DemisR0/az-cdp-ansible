@@ -4,10 +4,10 @@ local_network=10.0.0.0/24
 root_folder=/home/fjean/ansible/cdp-prepare
 
 [cdpcm]
-cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmaster1.jml.org
+cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmst01.jml.org
 
 [cdpmasters]
-cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmaster1.jml.org
+cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmst01.jml.org
 
 [cdpworker]
 cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks1.jml.org
@@ -18,7 +18,7 @@ cdpwks3.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key
 cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks1.jml.org
 
 [cdpcluster]
-cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmaster1.jml.org
+cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmst01.jml.org
 cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks1.jml.org
 cdpwks2.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks2.jml.org
 cdpwks3.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks3.jml.org

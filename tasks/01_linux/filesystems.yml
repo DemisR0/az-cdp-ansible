@@ -1,0 +1,35 @@
+---
+- name: FILESYSTEMS
+  hosts: cdpcluster
+  become: true
+  gather_facts: no
+
+# specific to server created with extended OS disks
+
+  tasks:
+  - name: filesystems - extend tmp size
+    command: "{{ item }}"
+    with_items:
+      - lvextend -L10G /dev/rootvg/tmplv
+      - xfs_growfs /tmp
+
+  #- name: filesystems - create /opt/cloudera 
+    # command: "{{ item }}"
+    # with_items:
+    #   - lvcreate -L 32G -n lvcloudera rootvg
+    #   - mkfs.xfs /dev/rootvg/lvcloudera
+    #   - mkdir /opt/cloudera
+    #   - mount /dev/rootvg/lvcloudera /opt/cloudera
+
+  # - name: filesystems - add clouderafs to fstab
+  #   lineinfile:
+  #     path: /etc/fstab
+  #     backup: yes
+  #     regexp: '.*/opt/cloudera.*'
+  #     line: '/dev/rootvg/lvcloudera /opt/cloudera            xfs     defaults        0.0'
+  #     state: present
+  - name: filesystems - extend tmp size
+    command: "{{ item }}"
+    with_items:
+      - lvextend -L30G /dev/rootvg/optlv
+      - xfs_growfs /opt

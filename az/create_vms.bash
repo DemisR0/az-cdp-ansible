@@ -40,6 +40,7 @@ az vm create --name cdpmaster${i}                                   \
              --subnet vnetmgt                                       \
              --private-ip-address $SUBNET_PREFIX_MASTER_GRP".1"$i    \
              --public-ip-address-dns-name cdpmaster${i}             \
+             --os-disk-size-gb 96                       \
              --size Standard_E2ds_v4                                  \
              --ssh-key-values $SSH_KEY_PATH                         \
              --subscription $SUBSCRIPTION
@@ -47,7 +48,7 @@ az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpmaster${i} 
 az vm auto-shutdown --location $LOCATION --name cdpmaster${i} --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION
 done
 
-for i in 1 2 3
+for i in 3
 do
 az vm create --name cdpwks${i}                                   \
              --resource-group $RESOURCE_GROUP                       \
@@ -60,9 +61,11 @@ az vm create --name cdpwks${i}                                   \
              --private-ip-address $SUBNET_PREFIX_WKS_GRP".1"$i    \
              --public-ip-address-dns-name cdpwks${i}                \
              --size Standard_D2s_v3                                   \
-             --data-disk-sizes-gb 8                                 \
+             --os-disk-size-gb 96                                    \
              --ssh-key-values $SSH_KEY_PATH                         \
              --subscription $SUBSCRIPTION
 az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpwks${i} --subscription $SUBSCRIPTION 
 az vm auto-shutdown --location $LOCATION --name cdpwks${i} --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION 
 done
+
+             --data-disk-sizes-gb 8                                 \

@@ -1,6 +1,6 @@
 ---
 - name: REPOSITORIES
-  hosts: cdpcm
+  hosts: cdpcluster
   become: true
   gather_facts: no
 
@@ -10,8 +10,8 @@
       name: cdp7
       description: cloudera cdp 7 repository
       file: cloudera-cdp7
-      baseurl: "{{ cloudera-manager }}"
-      gpgkey: "{{ cloudera-manager }}/RPM-GPG-KEY-cloudera"
+      baseurl: "{{ cloudera_repo_url }}"
+      gpgkey: "{{ cloudera_repo_url }}/RPM-GPG-KEY-cloudera"
       repo_gpgcheck: yes
       enabled: yes
     tags: repository
