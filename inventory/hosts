@@ -10,9 +10,9 @@ cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_
 cdpmaster1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpmst01.jml.org
 
 [cdpworker]
-cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks1.jml.org
-cdpwks2.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks2.jml.org
-cdpwks3.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks3.jml.org
+cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks01.jml.org
+cdpwks2.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks02.jml.org
+cdpwks3.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks03.jml.org
 
 [cdpkudu]
 cdpwks1.uksouth.cloudapp.azure.com ansible_user=cdpadmin ansible_ssh_private_key_file=/home/fjean/.ssh/id_rsa private_name=cdpwks1.jml.org
