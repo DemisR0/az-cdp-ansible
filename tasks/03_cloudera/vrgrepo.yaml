@@ -1,0 +1,39 @@
+---
+- name: CDP REPOSITORY
+  hosts: cdpcm
+  become: true
+  gather_facts: no
+
+  tasks:
+  - name: cdp repository - create FS 
+    command: "{{ item }}"
+    with_items:
+      - vgcreate repovg /dev/sdc
+      - lvcreate -L 31G -n lvcdprepo repovg
+      - mkfs.xfs /dev/repovg/lvcdprepo
+      - mkdir /cdprepo
+      - mount /dev/repovg/lvcdprepo /cdprepo
+
+  - name: cdp repository - add clouderafs to fstab
+    lineinfile:
+      path: /etc/fstab
+      backup: yes
+      regexp: '.*/opt/cdprepo.*'
+      line: '/dev/repovg /cdprepo            xfs     defaults        0.0'
+      state: present
+
+  - name: cdp repository - install http
+    yum:
+      name: httpd
+    tags: packages
+
+  - name: cdp repository
+    copy: 
+      src: repohttpd.conf
+      dest: /etc/httpd/conf.d/repohttps.conf
+      backup: yes
+  
+  
+
+
+

@@ -43,7 +43,7 @@
     ignore_errors: yes
 
   - name: kerberos - create admin principal
-    command: kadmin.local -r {{ kdc_realm }} -q "-pw {{ kdc_pwd }} addprinc root/admin"
+    command: kadmin.local -r {{ kdc_realm }} -q "addprinc -pw {{ kdc_pwd }} root/admin"
     when: ansible_hostname == kdc_server 
 
   - name: kerberos - start krb5kdc 

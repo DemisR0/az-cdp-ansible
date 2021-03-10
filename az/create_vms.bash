@@ -1,5 +1,5 @@
-export SUBNET_PREFIX_CM_GRP='10.0.0'
-export SUBNET_PREFIX_MASTER_GRP='10.0.1'
+    export SUBNET_PREFIX_CM_GRP='10.0.0'
+export SUBNET_PREFIX_MASTER_GRP='10.0.2' # changed to regroup all server in the same group
 export SUBNET_PREFIX_WKS_GRP='10.0.2'
 export MY_REMOTE_ACCESS='91.69.161.0/24'
 export SSH_KEY_PATH="/home/fjean/.ssh/id_rsa.pub"
@@ -28,27 +28,29 @@ export OS='RedHat:RHEL:7_9:7.9.2020111301'
 # az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpcm 
 # az vm auto-shutdown --location $LOCATION --name cdpcm --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION
 
+# change to be in workers subnet
 for i in 1
 do
-az vm create --name cdpmaster${i}                                   \
+az vm create --name cdpmst0${i}                                   \
              --resource-group $RESOURCE_GROUP                       \
              --location $LOCATION                                   \
              --image $OS                                            \
              --admin-username cdpadmin                              \
-             --nsg nsgcdpmst                                        \
-             --vnet-name vnetcdpmst                                 \
-             --subnet vnetmgt                                       \
-             --private-ip-address $SUBNET_PREFIX_MASTER_GRP".1"$i    \
+             --nsg nsgcdpwks                                        \
+             --vnet-name vnetcdpwks                                 \
+             --subnet vnetwks                                       \
+             --private-ip-address $SUBNET_PREFIX_MASTER_GRP".2"$i    \
              --public-ip-address-dns-name cdpmaster${i}             \
              --os-disk-size-gb 96                       \
+             --data-disk-sizes-gb 32                                  \
              --size Standard_E2ds_v4                                  \
              --ssh-key-values $SSH_KEY_PATH                         \
              --subscription $SUBSCRIPTION
-az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpmaster${i} --subscription $SUBSCRIPTION
-az vm auto-shutdown --location $LOCATION --name cdpmaster${i} --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION
+az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpmmst0${i} --subscription $SUBSCRIPTION
+az vm auto-shutdown --location $LOCATION --name cdpmst0${i} --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION
 done
 
-for i in 3
+for i in 1 2 3
 do
 az vm create --name cdpwks${i}                                   \
              --resource-group $RESOURCE_GROUP                       \
