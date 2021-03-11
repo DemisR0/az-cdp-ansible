@@ -10,7 +10,7 @@
   import_playbook: ./01_linux/network.yml
 
 - name: LIMITS 
-  import_playbook: ./01_linux/limits.yml
+  import_playbook: ./01_linux/kernel.yaml
 
 - name: SECURITY
   import_playbook: ./01_linux/security.yml
@@ -26,3 +26,9 @@
 
 - name: KDC configuration -> manag
   import_playbook: ./01_linux/kdc-config.yml
+
+- name: FILESYSTEMS extension
+  import_playbook: ./01_linux/filesystems.yml
+
+- name: CDP REPOSITORY preparation
+  import_playbook: ./03_cloudera/vrgrepo.yaml

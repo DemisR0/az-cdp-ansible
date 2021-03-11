@@ -1,1 +1,6 @@
 ssh-keys/Azcdpcluster-public.pub
+ssh-keys/id_ecdsa_mst01
+ssh-keys/id_ecdsa_mst01.pub
+tasks/cloudera.retry
+tasks/01_linux/kernel.retry
+tasks/01_linux/ssh-key.retry

@@ -29,6 +29,8 @@ export OS='RedHat:RHEL:7_9:7.9.2020111301'
 # az vm auto-shutdown --location $LOCATION --name cdpcm --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION
 
 # change to be in workers subnet
+if [[ $1 == "mst" ]] || [[ $1 == "all" ]]
+then
 for i in 1
 do
 az vm create --name cdpmst0${i}                                   \
@@ -46,10 +48,13 @@ az vm create --name cdpmst0${i}                                   \
              --size Standard_E2ds_v4                                  \
              --ssh-key-values $SSH_KEY_PATH                         \
              --subscription $SUBSCRIPTION
-az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpmmst0${i} --subscription $SUBSCRIPTION
+az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpmst0${i} --subscription $SUBSCRIPTION
 az vm auto-shutdown --location $LOCATION --name cdpmst0${i} --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION
 done
+fi
 
+if [[ $1 == "all" ]]
+then
 for i in 1 2 3
 do
 az vm create --name cdpwks${i}                                   \
@@ -69,5 +74,4 @@ az vm create --name cdpwks${i}                                   \
 az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpwks${i} --subscription $SUBSCRIPTION 
 az vm auto-shutdown --location $LOCATION --name cdpwks${i} --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION 
 done
-
-             --data-disk-sizes-gb 8                                 \
+fi

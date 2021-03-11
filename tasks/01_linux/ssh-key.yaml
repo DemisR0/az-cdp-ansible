@@ -1,0 +1,22 @@
+---
+- name: ROOT SSH KEY
+  hosts: cdpcluster
+  become: true
+
+  tasks:
+  - name: copy of root public keys to all servers
+    copy:
+      src: ../../ssh-keys/id_ecdsa_mst01.pub
+      dest: /root/.ssh
+
+  - name: insert key into authorized keys
+    shell: 
+      cmd: cat id_ecdsa_mst01.pub >> authorized_keys
+      chdir: /root/.ssh/
+
+  - name: copy private key to cdpcm server (Server name sensitive)
+    copy:
+      src: ../../ssh-keys/id_ecdsa_mst01
+      dest: /root/.ssh
+    when: private_name == 'cdpmst01.jml.org'
+    run_once: True

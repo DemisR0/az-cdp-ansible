@@ -1,0 +1,59 @@
+---
+- name: KERNEL - Changer servers soft/hard limits
+  hosts: cdpcluster
+  become: true
+
+  tasks:
+  - name: kernel - update limits.conf [ reboot is required ]
+    blockinfile:
+      block: |
+        *               soft    nofile          65535
+        *               hard    nofile          1029345
+        *               soft    nproc           unlimited
+        *               hard    nproc           unlimited
+        *               soft    memlock         unlimited
+        *               hard    memlock         unlimited 
+      path: /etc/security/limits.conf
+      insertbefore: # End of file
+      marker_begin: BEGIN CDP IBM
+      marker_end: END CDP IBM
+      backup: yes
+  - name: kernel - remove default limits file for redhat
+    file:
+      path: /etc/security/limits.d/20-nproc.conf 
+      state: absent
+  - name: kernel - list /etc/security/limits.d if any they can prevent correct usage of CDP
+    find:
+      path: /etc/security/limits.d
+      patterns: "*"
+
+  - name: kernel - change swappiness online
+    shell: | 
+      echo 1 > /proc/sys/vm/swappiness
+      sysctl vm.swappiness=1
+
+  - name: kernel - remove Huge Pages on the fly
+    shell: |
+        echo never > /sys/kernel/mm/transparent_hugepage/defrag
+        echo never > /sys/kernel/mm/transparent_hugepage/enabled
+
+  - name: kernel - remove Huge Page at boot file copy
+    copy: 
+      src: '{{ item.From }}'
+      dest: '{{ item.To }}'
+      mode: 0755
+    with_items:
+      - { From: "./thp.sh", To: "/usr/bin/thp.sh" }
+      - { From: "./thp.service", To: "/etc/systemd/system/" }
+
+  - name: kernel - remove Huge Pages at boot link creation
+    file:
+      src: /etc/systemd/system/thp.service
+      dest: /etc/systemd/system/multi-user.target.wants/thp.service
+      state: link
+
+  - name: kernel - remove Huge Pages load service
+    service:
+      name: thp.service
+      state: started
+      enabled: yes

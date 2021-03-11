@@ -19,7 +19,7 @@
       path: /etc/fstab
       backup: yes
       regexp: '.*/opt/cdprepo.*'
-      line: '/dev/repovg /cdprepo            xfs     defaults        0.0'
+      line: '/dev/repovg/lvcdprepo   /cdprepo               xfs     defaults        0 0'
       state: present
 
   - name: cdp repository - install http
@@ -27,13 +27,17 @@
       name: httpd
     tags: packages
 
-  - name: cdp repository
+  - name: cdp repository - allow httpd access
     copy: 
       src: repohttpd.conf
       dest: /etc/httpd/conf.d/repohttps.conf
       backup: yes
   
-  
+  - name: cdp repository - create link in httpd config
+    file:
+      src: /cdprepo
+      dest: /var/www/html/cloudera-repos
+      state: link
 
 
 

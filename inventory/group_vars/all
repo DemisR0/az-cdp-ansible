@@ -23,7 +23,7 @@ java_home: /usr/lib/jvm/java-11-openjdk
 install_entropy: yes
 
 # repositories
-cloudera_repo_url: http://10.0.1.11/cloudera-repos/cm7/7.2.4/redhat7/yum
+cloudera_repo_url: http://cdpmst01.jml.org/cloudera-repos/cm7/7.2.4/redhat7/yum
 
 # cloudera 
 cloudera_db_type: postgresql

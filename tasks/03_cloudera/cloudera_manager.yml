@@ -11,6 +11,7 @@
         - cloudera-manager-agent
         - cloudera-manager-server
       state: present
+      disable_gpg_check: yes
     tags: 
       - package
       - cloudera

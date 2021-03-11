@@ -1,0 +1,22 @@
+---
+- name: CLOUDERA MANAGER
+  hosts: cdpcm
+  gather_facts: false
+  tasks:
+    - debug:
+        msg: "Configure cloudera manager and execute other components prereqs"
+
+- name: CM configure linux local repo for cloudera
+  import_playbook: ./03_cloudera/repos.yml
+
+# - name: CM packages installation
+#   import_playbook: ./03_cloudera/cloudera_manager.yml
+
+- name: CM Entropy prerequisites
+  import_playbook: ./03_cloudera/encrypt_prereq.yml
+
+- name: CM configuration
+  import_playbook: ./03_cloudera/cloudera_configuration.yml
+
+- name: KUDU preprequisites
+  import_playbook: ./03_cloudera/kudu.yml

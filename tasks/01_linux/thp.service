@@ -1,0 +1,11 @@
+[Unit]
+Description=Description for sample script goes here
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/THP.bash
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

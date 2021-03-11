@@ -98,7 +98,7 @@
       - scm
       - rman
       - hue
-      - metastore
+      - hive
       - oozie
       - das
       - schemaregistry
@@ -114,7 +114,6 @@
       - scm
       - rman
       - hue
-      - metastore
       - oozie
       - das
       - schemaregistry
@@ -122,6 +121,10 @@
       - registry
       - streamsmsgmgr
 
+  - name: create users for cdp
+    become: yes
+    become_user: postgres
+    command: createdb metastore --owner hive  
 
   - name: create ranger database
     become: yes
@@ -139,7 +142,7 @@
       - echo "alter user scm with password '{{ cdp_users_pass }}';"| psql
       - echo "alter user rman with password '{{ cdp_users_pass }}';"| psql
       - echo "alter user hue with password '{{ cdp_users_pass }}';"| psql
-      - echo "alter user metastore with password '{{ cdp_users_pass }}';"| psql
+      - echo "alter user hive with password '{{ cdp_users_pass }}';"| psql
       - echo "alter user oozie with password '{{ cdp_users_pass }}';"| psql
       - echo "alter user das with password '{{ cdp_users_pass }}';"| psql
       - echo "alter user schemaregistry with password '{{ cdp_users_pass }}';"| psql
