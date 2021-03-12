@@ -1,0 +1,39 @@
+---
+- name: HDFS FS
+  hosts: cdpworker
+  become: True
+  gather_facts: no
+  
+  tasks:
+  - name: hdfs - create directory
+    file:
+      path: /hadoopfs
+      owner: root
+      group: root
+      mode: '0755'
+      state: directory
+    tags: 
+      - mkdir 
+      - fs
+
+  - name: hdfs - create fs on sdc 
+    command: "{{ item }}"
+    with_items:        
+      - vgcreate hdfsvg /dev/sdc
+      - lvcreate -L 31G -n lvhdfs hdfsvg
+      - mkfs.xfs /dev/hdfsvg/lvhdfs
+      - mount /dev/hdfsvg/lvhdfs /hadoopfs
+    tags: 
+      - createfs
+      - fs 
+
+  - name: hdfs - add fs to fstab
+    lineinfile:
+      path: /etc/fstab
+      backup: yes
+      regexp: '.*hdfs*'
+      line: '/dev/hdfsvg/lvhdfs /hadoopfs            xfs     defaults        0 0'
+      state: present
+  tags: 
+    - fstab
+    - fs

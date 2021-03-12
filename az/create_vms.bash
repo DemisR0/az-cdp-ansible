@@ -75,3 +75,11 @@ az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpwks${i} --s
 az vm auto-shutdown --location $LOCATION --name cdpwks${i} --resource-group $RESOURCE_GROUP --time 2100  --subscription $SUBSCRIPTION 
 done
 fi
+
+if [[ $1 == "all" ]]
+then
+for i in 2 3
+do  
+az vm disk attach --name HDFS_WKS${i} --new --resource-group $RESOURCE_GROUP --subscription $SUBSCRIPTION --size-gb 32 --sku Standard_LRS --vm-name cdpwks${i}
+done
+fi
