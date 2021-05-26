@@ -1,6 +1,6 @@
     export SUBNET_PREFIX_CM_GRP='10.0.0'
-export SUBNET_PREFIX_MASTER_GRP='10.0.2' # changed to regroup all server in the same group
-export SUBNET_PREFIX_WKS_GRP='10.0.2'
+export SUBNET_PREFIX_MASTER_GRP='10.0.0' # changed to regroup all server in the same group
+export SUBNET_PREFIX_WKS_GRP='10.0.0'
 export MY_REMOTE_ACCESS='91.69.161.0/24'
 export SSH_KEY_PATH="/home/fjean/.ssh/id_rsa.pub"
 export RESOURCE_GROUP='rsg-uks-cdp'
@@ -33,7 +33,7 @@ if [[ $1 == "mst" ]] || [[ $1 == "all" ]]
 then
 for i in 1
 do
-az vm create --name cdpmst0${i}                                   \
+az vm create --name cdpmst0${i}                                     \
              --resource-group $RESOURCE_GROUP                       \
              --location $LOCATION                                   \
              --image $OS                                            \
@@ -41,11 +41,11 @@ az vm create --name cdpmst0${i}                                   \
              --nsg nsgcdpwks                                        \
              --vnet-name vnetcdpwks                                 \
              --subnet vnetwks                                       \
-             --private-ip-address $SUBNET_PREFIX_MASTER_GRP".2"$i    \
+             --private-ip-address $SUBNET_PREFIX_MASTER_GRP".2"$i   \
              --public-ip-address-dns-name cdpmaster${i}             \
-             --os-disk-size-gb 96                       \
-             --data-disk-sizes-gb 32                                  \
-             --size Standard_E2ds_v4                                  \
+             --os-disk-size-gb 64                                  \
+             --storage-sku Standard_LRS
+             --size Standard_E2as_v4                                  \
              --ssh-key-values $SSH_KEY_PATH                         \
              --subscription $SUBSCRIPTION
 az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpmst0${i} --subscription $SUBSCRIPTION
@@ -65,10 +65,11 @@ az vm create --name cdpwks${i}                                   \
              --nsg nsgcdpwks                                        \
              --vnet-name vnetcdpwks                                 \
              --subnet vnetwks                                       \
-             --private-ip-address $SUBNET_PREFIX_WKS_GRP".1"$i    \
+             --private-ip-address $SUBNET_PREFIX_WKS_GRP".3"$i    \
              --public-ip-address-dns-name cdpwks${i}                \
-             --size Standard_D2s_v3                                   \
-             --os-disk-size-gb 96                                    \
+             --size Standard_B2ms                                   \
+             --os-disk-size-gb 32                                    \
+             --storage-sku Standard_LRS
              --ssh-key-values $SSH_KEY_PATH                         \
              --subscription $SUBSCRIPTION
 az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpwks${i} --subscription $SUBSCRIPTION 
