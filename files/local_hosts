@@ -2,7 +2,7 @@
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 # cm
 10.0.0.10 cdpcm.jml.org cdpcm 
-10.0.2.21 cdpmst01.jml.org cdpmst01 
-10.0.2.11 cdpwks01.jml.org cdpwks01
-10.0.2.12 cdpwks02.jml.org cdpwks02
-10.0.2.13 cdpwks03.jml.org cdpwks03
+10.0.0.21 cdpmst01.jml.org cdpmst01 
+10.0.0.31 cdpwks01.jml.org cdpwks01
+10.0.0.32 cdpwks02.jml.org cdpwks02
+10.0.0.33 cdpwks03.jml.org cdpwks03
