@@ -77,10 +77,10 @@ az vm auto-shutdown --location $LOCATION --name cdpwks${i} --resource-group $RES
 done
 fi
 
-if [[ $1 == "all" ]]
-then
-for i in 2 3
-do  
-az vm disk attach --name HDFS_WKS${i} --new --resource-group $RESOURCE_GROUP --subscription $SUBSCRIPTION --size-gb 32 --sku Standard_LRS --vm-name cdpwks${i}
-done
-fi
+# if [[ $1 == "all" ]]
+# then
+# for i in 2 3
+# do  
+# az vm disk attach --name HDFS_WKS${i} --new --resource-group $RESOURCE_GROUP --subscription $SUBSCRIPTION --size-gb 32 --sku Standard_LRS --vm-name cdpwks${i}
+# done
+# fi
