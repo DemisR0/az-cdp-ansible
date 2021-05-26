@@ -44,7 +44,7 @@ az vm create --name cdpmst0${i}                                     \
              --private-ip-address $SUBNET_PREFIX_MASTER_GRP".2"$i   \
              --public-ip-address-dns-name cdpmaster${i}             \
              --os-disk-size-gb 64                                  \
-             --storage-sku Standard_LRS
+             --storage-sku Standard_LRS                             \
              --size Standard_E2as_v4                                  \
              --ssh-key-values $SSH_KEY_PATH                         \
              --subscription $SUBSCRIPTION
@@ -53,7 +53,7 @@ az vm auto-shutdown --location $LOCATION --name cdpmst0${i} --resource-group $RE
 done
 fi
 
-if [[ $1 == "all" ]]
+if [[ $1 == "all" ]] || [[ $1 == "wks" ]]
 then
 for i in 1 2 3
 do
@@ -68,8 +68,8 @@ az vm create --name cdpwks${i}                                   \
              --private-ip-address $SUBNET_PREFIX_WKS_GRP".3"$i    \
              --public-ip-address-dns-name cdpwks${i}                \
              --size Standard_B2ms                                   \
-             --os-disk-size-gb 32                                    \
-             --storage-sku Standard_LRS
+             --os-disk-size-gb 64                                    \
+             --storage-sku Standard_LRS                             \
              --ssh-key-values $SSH_KEY_PATH                         \
              --subscription $SUBSCRIPTION
 az vm open-port --port 22 --resource-group $RESOURCE_GROUP --name cdpwks${i} --subscription $SUBSCRIPTION 
