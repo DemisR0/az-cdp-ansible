@@ -38,9 +38,9 @@ az vm create --name cdpmst0${i}                                     \
              --location $LOCATION                                   \
              --image $OS                                            \
              --admin-username cdpadmin                              \
-             --nsg nsgcdpwks                                        \
-             --vnet-name vnetcdpwks                                 \
-             --subnet vnetwks                                       \
+             --nsg nsgcdpcm                                        \
+             --vnet-name vnetcdpcm                                 \
+             --subnet vnetcm                                       \
              --private-ip-address $SUBNET_PREFIX_MASTER_GRP".2"$i   \
              --public-ip-address-dns-name cdpmaster${i}             \
              --os-disk-size-gb 64                                  \
@@ -62,9 +62,9 @@ az vm create --name cdpwks${i}                                   \
              --location $LOCATION                                   \
              --image $OS                                            \
              --admin-username cdpadmin                              \
-             --nsg nsgcdpwks                                        \
-             --vnet-name vnetcdpwks                                 \
-             --subnet vnetwks                                       \
+             --nsg nsgcdpcm                                        \
+             --vnet-name vnetcdpcm                                 \
+             --subnet vnetcm                                       \
              --private-ip-address $SUBNET_PREFIX_WKS_GRP".3"$i    \
              --public-ip-address-dns-name cdpwks${i}                \
              --size Standard_B2ms                                   \
